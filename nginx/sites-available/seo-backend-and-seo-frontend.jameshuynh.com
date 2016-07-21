@@ -41,7 +41,9 @@ server {
     }
 
     if ($http_user_agent ~* "curl|Wget|googlebot|Google\-Structured\-Data\-Testing\-Tool|yahoo|bingbot|baiduspider|yandex|yeti|yodaobot|gigabot|ia_archiver|facebookexternalhit|twitterbot|developers\.google\.com") {
-      rewrite ^ /seo?path=$uri break;
+      set_escape_uri $escape_request_uri $request_uri;
+      set $args path=$escape_request_uri;
+      rewrite ^(.*)$ /seo;
       proxy_pass http://seo_backend;
       break;
     }
